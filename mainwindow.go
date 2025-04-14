@@ -17,7 +17,6 @@ type Parking struct {
 	occupiedSpotsRand int
 	autoMode          chan string
 	operatingMode     bool
-	// actuator          bool
 }
 
 func (p *Parking) UpdateSpots() {
@@ -40,15 +39,6 @@ func mainwindow() {
 
 	// Запускаем подписку в отдельной горутине
 	go subscribeToTopic("mode/topic", messageChannel)
-
-	// go func() {
-	// 	for {
-	// 		select {
-	// 		case message := <-messageChannel:
-	// 			fmt.Printf("Получено сообщение из канала: %s\n", message)
-	// 		}
-	// 	}
-	// }()
 
 	// Создаем виджеты для отображения свободных и занятых мест
 	freeSpots := widget.NewLabel("Свободные места: 0")
@@ -149,7 +139,6 @@ func mainwindow() {
 
 	go func() {
 		for mode := range myParking.autoMode {
-			// fmt.Printf("Получен режим: %s\n", mode) // Добавлен вывод
 			if mode == "hand" && !leftPanel.Visible() {
 				leftPanel.Show()
 			} else if mode == "auto" && leftPanel.Visible() {
